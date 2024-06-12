@@ -119,7 +119,13 @@
 
 Introduction
 
-\section{Notation}
+\section{Brief introduction to Rust}
+
+This section briefly introduces the Rust language,
+focusing on the subset of interest for the purposes of this discussion.
+It is meant for people familiar with PL theory but not Rust in particular.
+
+\subsection{Notation}
 
 We use an overline $\overline{S}$ to indicate zero or more instances of the symbol $S$.
 Syntactically it is represented as a comma-separated list (with optional trailing comma).
@@ -147,6 +153,7 @@ A type $\tau$ is...
 
 \begin{itemize}
     \item a struct $S\langle\overline{\tau}\rangle$ with type parameters $\overline{\tau}$
+    \item a tuple $(\overline{\tau})$ of types (with the empty tuple $()$ representing the unit type)
     \item an associated type $A\:\tau$
     \item a type parameter $X$
 \end{itemize}
@@ -161,7 +168,8 @@ trait $T$: $\overline{T_s}$ {
 }
 \end{lstlisting}
 
-Traits in Rust contain methods and other kinds of members, but we limit ourselves to the case of exactly one associated type.
+Traits in Rust contain methods and other kinds of members,
+but we limit ourselves to the case of exactly one associated type.
 The trait definition includes:
 
 \begin{itemize}
@@ -196,6 +204,83 @@ A provable predicate in our system is a \emph{where clause} $W$:
     \item \code{W0 => W1}, not available in Rust today, indicates that $W_0$ being true implies $W_1$ holds.
 \end{itemize}
 
+\subsection{Special traits}
+
+The most common use for traits in Rust is to define interfaces,
+but they are also regularly as markers to indicate sets of types with a particular property.
+Some traits are special in that they have a specific meaning to the Rust compiler,
+such as the following:
+
+\begin{itemize}
+    \item The \code{Copy} trait indicates types whose values can safely be copied by simply copying their bits.
+    In logical terms, a value is not affine if its type implements \code{Copy}.
+    The \code{Copy} type is implemented like any other trait but, as a special rule,
+    the compiler enforces that this is only permitted if all subfields also implement \code{Copy}.
+    \item The \code{Send} and \code{Sync} traits indicates types whose values can safely be sent between threads
+    and shared between threads, respectively. 
+    The next section discusses how they are implemented.
+\end{itemize}
+
+\subsection{Coinductive auto traits}
+
+The \code{Send} and \code{Sync} traits introduced in the previous section
+are the most prominent examples of \emph{auto traits}.
+Auto traits are a particular set of traits (not user extensible)
+for which the compiler automatically adds an implementation.
+In other words, the compiler automatically decides if a type $\tau$ implements \code{Send}
+(unless the user opts out by proving their own impl).
+The criteria used is that $\tau$ is \code{Send} if all of its field types are \code{Send}.
+The following listing shows a struct $S$ along with the impl that the compiler would automatically introduce:
+
+\begin{lstlisting}[language=Rust]
+struct S<$\overline{X}$> {
+    field0: $\tau_0$,
+    ...
+    fieldN: $\tau_N$,
+}
+
+impl<$\overline{X}$> Send for $S\langle \overline{X} \rangle$
+where
+    $\tau_0$: Send,
+    ...
+    $\tau_N$: Send,
+{
+    // 
+}
+\end{lstlisting}
+
+Besides having an automatic implementation, auto traits are different from other traits in that they use coinductive semantics.
+The need for this arises because of the possibility of cycles between types.
+To see this, consider the following (recursive) struct \code{List}:
+
+\begin{lstlisting}[language=Rust]
+struct List {
+    next: Option<Box<List>>,
+    //    ^^^^^^ This is a Rust enum, which we have not included in our
+    //           Rust subset, but which are a typical algebraic Data
+    //           type (structs can be considered an enum with one
+    //           variant).
+}    
+\end{lstlisting}
+
+In this case,
+
+\begin{itemize}
+    \item \code{List} is \code{Send} if \code{Option<Box<List>>} is \code{Send},
+    \item \code{Option<Box<List>>} is \code{Send} if \code{Box<List>} is \code{Send},
+    \item \code{Box<List>} is \code{Send} if \code{List} is \code{Send},
+    \item \code{List} is \code{Send} because we have a cycle and \code{Send} is a coinductive trait.
+\end{itemize}
+
+\subsection{Example programs}
+
+Here are some example programs we'll use later on.
+
+\subsubsection{Hello World}
+
+\subsubsection{MagicCopy}
+
+\subsubsection{MagicCopy}
 
 Rust where clauses correspond to logical
 Rust's syntax can be translated into our mathematical where-clauses as follows:
