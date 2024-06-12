@@ -256,10 +256,11 @@ To see this, consider the following (recursive) struct \code{List}:
 \begin{lstlisting}[language=Rust]
 struct List {
     next: Option<Box<List>>,
-    //    ^^^^^^ This is a Rust enum, which we have not included in our
-    //           Rust subset, but which are a typical algebraic Data
-    //           type (structs can be considered an enum with one
-    //           variant).
+    //    ^^^^^^ This is a Rust enum, which we have not
+    //           included in our Rust subset, but which
+    //           are a typical algebraic data type
+    //           (structs can be considered an enum with
+    //           one variant).
 }    
 \end{lstlisting}
 
