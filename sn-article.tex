@@ -64,8 +64,11 @@
 %%%%
 
 \lstdefinelanguage{Rust}{
-    keywords={fn, trait, type, impl, for, where},
-    mathescape = true,
+    keywords={fn, trait, type, impl, for, where, struct, enum},
+    frame=single,
+    morecomment=[l]//,
+    mathescape=true,
+    literate={<}{{$\langle$}}1 {>}{{$\rangle$}}1,
 }
 
 \newcommand{\code}[1]{{\tt #1}}
