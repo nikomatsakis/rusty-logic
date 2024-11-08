@@ -1,0 +1,378 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>Formal rules &#8212; Rusty Logic  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Rusty, a featherweight Rust" href="intro.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section class="tex2jax_ignore mathjax_ignore" id="formal-rules">
+<h1>Formal rules<a class="headerlink" href="#formal-rules" title="Permalink to this heading">¶</a></h1>
+<section id="judgments">
+<h2>Judgments<a class="headerlink" href="#judgments" title="Permalink to this heading">¶</a></h2>
+<p>The following judgments indicate things present in the source program</p>
+<section id="struct">
+<h3>Struct<a class="headerlink" href="#struct" title="Permalink to this heading">¶</a></h3>
+<p>The struct <span class="math notranslate nohighlight">\(S\)</span> has the type parameters <span class="math notranslate nohighlight">\(\overline{X}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\text{struct}\:S \langle \overline{X} \rangle \{ \ldots \}
+\]</div>
+</section>
+<section id="struct-fields">
+<h3>Struct fields<a class="headerlink" href="#struct-fields" title="Permalink to this heading">¶</a></h3>
+<p>The struct <span class="math notranslate nohighlight">\(S\langle\overline{\tau}\rangle\)</span> is declared with the given fields</p>
+<div class="math notranslate nohighlight">
+\[
+S \langle \overline{\tau} \rangle \{ \overline{\text{field}: \tau_f} \}
+\]</div>
+</section>
+<section id="trait-supertraits">
+<h3>Trait supertraits<a class="headerlink" href="#trait-supertraits" title="Permalink to this heading">¶</a></h3>
+<p>The trait <span class="math notranslate nohighlight">\(T\)</span> is declared with supertraits <span class="math notranslate nohighlight">\(\overline{T_s}\)</span></p>
+<div class="math notranslate nohighlight">
+\[
+\text{trait}\:T:\:\overline{T_s} \{ \ldots \}
+\]</div>
+</section>
+<section id="trait-associated-type-bounds">
+<h3>Trait associated type bounds<a class="headerlink" href="#trait-associated-type-bounds" title="Permalink to this heading">¶</a></h3>
+<p>The trait <span class="math notranslate nohighlight">\(T\)</span> is declared with the given associated type bound</p>
+<div class="math notranslate nohighlight">
+\[
+\text{trait}\:T: \ldots \{ \text{type} A: \overline{T_b} \}
+\]</div>
+</section>
+<section id="implements">
+<h3>Implements<a class="headerlink" href="#implements" title="Permalink to this heading">¶</a></h3>
+<p>The trait <span class="math notranslate nohighlight">\(T\)</span> is implemented for <span class="math notranslate nohighlight">\(\tau\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[
+\Gamma \vdash T \: \tau
+\]</div>
+</section>
+<section id="normalizes-to">
+<h3>Normalizes to<a class="headerlink" href="#normalizes-to" title="Permalink to this heading">¶</a></h3>
+<p>The associated type <span class="math notranslate nohighlight">\(A\)</span>, applied to the type <span class="math notranslate nohighlight">\(\tau\)</span> reduces to <span class="math notranslate nohighlight">\(\tau_1\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\Gamma \vdash A \: \tau \mapsto \tau_1\]</div>
+</section>
+</section>
+<section id="basic-axioms">
+<h2>Basic axioms<a class="headerlink" href="#basic-axioms" title="Permalink to this heading">¶</a></h2>
+<section id="assumption">
+<h3>Assumption<a class="headerlink" href="#assumption" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    W \in \Gamma
+}{
+    \Gamma \vdash W
+}
+\]</div>
+</section>
+<section id="implication">
+<h3>Implication<a class="headerlink" href="#implication" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma,W_0 \vdash W_1
+}{
+    \Gamma \vdash (W_0 \Rightarrow W_1)
+}
+\]</div>
+</section>
+<section id="forall">
+<h3>Forall<a class="headerlink" href="#forall" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash W \quad
+    X \notin FV(\Gamma, W)
+}{
+    \Gamma \vdash \forall \overline{X}.W
+}
+\]</div>
+</section>
+<section id="exists">
+<h3>Exists<a class="headerlink" href="#exists" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash [\overline{\tau}/\overline{X}] W
+}{
+    \Gamma \vdash \exists{\overline{X}}.W
+}
+\]</div>
+</section>
+<section id="and">
+<h3>And<a class="headerlink" href="#and" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash W_0 \quad
+    \Gamma \vdash W_1
+}{
+    \Gamma \vdash W_0 \wedge W_1
+}
+\]</div>
+</section>
+<section id="or">
+<h3>Or<a class="headerlink" href="#or" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash W_i
+}{
+    \Gamma \vdash W_0 \vee W_1
+}
+\]</div>
+</section>
+</section>
+<section id="type-equality">
+<h2>Type equality<a class="headerlink" href="#type-equality" title="Permalink to this heading">¶</a></h2>
+<section id="reflexive">
+<h3>Reflexive<a class="headerlink" href="#reflexive" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash \tau_2 = \tau_1
+}{
+    \Gamma \vdash \tau_1 = \tau_2
+}
+\]</div>
+</section>
+<section id="syntactic-equality-rules">
+<h3>Syntactic equality rules<a class="headerlink" href="#syntactic-equality-rules" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash \overline{\tau_1 = \tau_2}
+}{
+    \Gamma \vdash S\langle\overline{\tau_1}\rangle = S\langle\overline{\tau_2}\rangle
+}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash \overline{\tau_1 = \tau_2}
+}{
+    \Gamma \vdash (\overline{\tau_1}) = (\overline{\tau_2})
+}
+\]</div>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+}{
+    \Gamma \vdash X = X
+}
+\]</div>
+</section>
+<section id="alias-syntactic-equality">
+<h3>Alias syntactic equality<a class="headerlink" href="#alias-syntactic-equality" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash \overline{\tau_1 = \tau_2}
+}{
+    \Gamma \vdash A\:\tau_1 = A\:\tau_2
+}
+\]</div>
+</section>
+<section id="alias-normalization-equality">
+<h3>Alias normalization equality<a class="headerlink" href="#alias-normalization-equality" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[
+\frac{
+    \Gamma \vdash A\:\tau_1 \mapsto \tau_2 \quad
+    \Gamma \vdash \tau_2 = \tau_3
+}{
+    \Gamma \vdash A\:\tau_1 = \tau_3
+}
+\]</div>
+</section>
+</section>
+<section id="trait-is-implemented">
+<h2>Trait is implemented<a class="headerlink" href="#trait-is-implemented" title="Permalink to this heading">¶</a></h2>
+<section id="implemented-from-impl">
+<h3>implemented-from-impl<a class="headerlink" href="#implemented-from-impl" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{
+    \begin{gather}
+    \text{trait}\:T:\:\overline{T_s} \{ \ldots \} \\
+    \text{impl}\langle\overline{X_i}\rangle\:T\:\text{for}\:\tau_i
+    \:\text{where}\:\overline{W_i} \{\} \\
+    \Gamma, T\:\tau \vdash \tau = [\overline{X_i \mapsto \tau_0}] \\
+    \Gamma, T\:\tau \vdash [\overline{X_i \mapsto \tau_0}] W_i \\
+    \overline{\Gamma\vdash T_s\:\tau}
+    \end{gather}
+}{
+    \Gamma \vdash T\:\tau
+}
+\end{split}\]</div>
+<p>Key things to note:</p>
+<ul class="simple">
+<li><p>The supertraits are proven in the same environment <span class="math notranslate nohighlight">\(\Gamma\)</span></p>
+<ul>
+<li><p>This reflects the fact a cycle in that context is unproductive.</p></li>
+</ul>
+</li>
+</ul>
+</section>
+<section id="implemented-from-super-trait">
+<h3>implemented-from-super-trait<a class="headerlink" href="#implemented-from-super-trait" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{
+    \begin{gather}
+    \text{trait}\:T:\:\ldots,T_s,\ldots \{ \ldots \} \\
+    \Gamma\vdash T\:\tau
+    \end{gather}
+}{
+    \Gamma \vdash T_s\:\tau
+}
+\end{split}\]</div>
+</section>
+<section id="implemented-from-associated-type-bound">
+<h3>implemented-from-associated-type-bound<a class="headerlink" href="#implemented-from-associated-type-bound" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\frac{
+    \begin{gather}
+    \text{trait}\:T:\ldots \{ type A: \ldots,T_b,\ldots \} \\
+    \end{gather}
+}{
+    \Gamma \vdash T_b\:A\:\tau
+}
+\end{split}\]</div>
+</section>
+</section>
+<section id="normalization">
+<h2>Normalization<a class="headerlink" href="#normalization" title="Permalink to this heading">¶</a></h2>
+<section id="normalize-via-impl">
+<h3>normalize-via-impl<a class="headerlink" href="#normalize-via-impl" title="Permalink to this heading">¶</a></h3>
+<div class="math notranslate nohighlight">
+\[ \begin{align}\begin{aligned}\begin{split}
+\frac{
+    \begin{gather}
+    
+    \text{trait}\:T:\:\overline{T_s} \{ type A: \overline{T_b} \} \\\end{split}\\\begin{split}    \text{impl}\langle\overline{X_i}\rangle\:T\:\text{for}\:\tau_i
+    \:\text{where}\:\overline{W_i} \{ type A = \tau_i \} \\
+    
+    \Gamma \vdash T\:\tau \\\end{split}\\    \Gamma \vdash \[\overline{X_i \mapsto \tau_s}\] \tau_i = \tau_3\\    \end{gather}
+}{
+    \Gamma \vdash A\:\tau \mapsto \tau_3
+}
+\end{aligned}\end{align} \]</div>
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Rusty Logic</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Rusty, a featherweight Rust</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Formal rules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#judgments">Judgments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#basic-axioms">Basic axioms</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#type-equality">Type equality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trait-is-implemented">Trait is implemented</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normalization">Normalization</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="intro.html" title="previous chapter">Rusty, a featherweight Rust</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2024, Niko Matsakis.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 5.3.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/judgments.md.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
