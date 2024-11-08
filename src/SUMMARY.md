@@ -1,3 +1,0 @@
-# Publication
-
-- [Introduction](./introduction.md)
