@@ -182,7 +182,7 @@ $$
     \text{trait}\:T:\:\overline{T_s} \{ \ldots \} \\
     \text{impl}\langle\overline{X_i}\rangle\:T\:\text{for}\:\tau_i
     \:\text{where}\:\overline{W_i} \{\} \\
-    \Gamma, T\:\tau \vdash \tau = [\overline{X_i \mapsto \tau_0}] \\
+    \Gamma, T\:\tau \vdash \tau = [\overline{X_i \mapsto \tau_0}] \tau_i \\
     \Gamma, T\:\tau \vdash [\overline{X_i \mapsto \tau_0}] W_i \\
     \overline{\Gamma\vdash T_s\:\tau}
     \end{gather}
