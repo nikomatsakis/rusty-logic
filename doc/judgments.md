@@ -228,18 +228,16 @@ $$
 $$
 \frac{
     \begin{gather}
-    
-    \text{trait}\:T:\:\overline{T_s} \{ type A: \overline{T_b} \} \\
-
+    \text{trait}\:T:\:\overline{T_s}\:\{\:type\:A: \overline{T_b}\:\} \\
     \text{impl}\langle\overline{X_i}\rangle\:T\:\text{for}\:\tau_i
-    \:\text{where}\:\overline{W_i} \{ type A = \tau_i \} \\
-    
-    \Gamma \vdash T\:\tau \\
-
-    \Gamma \vdash \[\overline{X_i \mapsto \tau_s}\] \tau_i = \tau_3
-
+    \:\text{where}\:\overline{W_i} \{
+        \:\text{type}\:A\:=\:\tau_a;\:
+    \} \\
+    \Gamma, T\:\tau \vdash \tau = [\overline{X_i \mapsto \tau_0}] \tau_i \\
+    \Gamma, T\:\tau \vdash [\overline{X_i \mapsto \tau_0}] W_i \\
+    \overline{\Gamma\vdash T_s\:\tau}
     \end{gather}
 }{
-    \Gamma \vdash A\:\tau \mapsto \tau_3
+    \Gamma \vdash A\:\tau \mapsto [\overline{X_i \mapsto \tau_0}] \tau_a
 }
 $$
