@@ -157,7 +157,7 @@ $$
 \frac{
     \Gamma \vdash \overline{\tau_1 = \tau_2}
 }{
-    \Gamma \vdash A\:\tau_1 = A\:\tau_2
+    \Gamma \vdash A \: \tau_1 = A \: \tau_2
 }
 $$
 
