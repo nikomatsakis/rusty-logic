@@ -157,7 +157,7 @@ $$
 \frac{
     \Gamma \vdash \overline{\tau_1 = \tau_2}
 }{
-    \Gamma \vdash A \: \tau_1 = A \: \tau_2
+    \Gamma \vdash A\ \tau_1 = A\ \tau_2
 }
 $$
 
@@ -165,10 +165,10 @@ $$
 
 $$
 \frac{
-    \Gamma \vdash A\:\tau_1 \mapsto \tau_2 \quad
+    \Gamma \vdash A\ \tau_1 \mapsto \tau_2 \quad
     \Gamma \vdash \tau_2 = \tau_3
 }{
-    \Gamma \vdash A\:\tau_1 = \tau_3
+    \Gamma \vdash A\ \tau_1 = \tau_3
 }
 $$
 
