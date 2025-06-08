@@ -23,6 +23,7 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Updated CLAUDE.md with mdBook authoring guidelines (tone, cross-refs, notation)
 - ✅ Ported Where Clauses chapter with inline code and math notation
 - ✅ Ported Special traits chapter with Copy, Send, and Sync explanations
+- ✅ Ported Coinductive auto traits chapter with automatic impls and cyclic types
 
 ### Current Work
 - Ready to continue chapter-by-chapter migration
