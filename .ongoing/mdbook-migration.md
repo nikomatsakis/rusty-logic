@@ -21,6 +21,7 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Verified mdbook-katex doesn't process math in code blocks (works as expected)
 - ✅ Added formal code block conventions to Notation chapter
 - ✅ Updated CLAUDE.md with mdBook authoring guidelines (tone, cross-refs, notation)
+- ✅ Ported Where Clauses chapter with inline code and math notation
 
 ### Current Work
 - Ready to continue chapter-by-chapter migration
