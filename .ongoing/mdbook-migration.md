@@ -19,6 +19,8 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Ported Traits and impls chapter with mixed code/math content
 - ✅ Established notation convention: overlines in math text, X_0,...,X_n in code blocks
 - ✅ Verified mdbook-katex doesn't process math in code blocks (works as expected)
+- ✅ Added formal code block conventions to Notation chapter
+- ✅ Updated CLAUDE.md with mdBook authoring guidelines (tone, cross-refs, notation)
 
 ### Current Work
 - Ready to continue chapter-by-chapter migration

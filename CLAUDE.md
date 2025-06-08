@@ -14,6 +14,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **No proactive todo lists**: Don't create comprehensive task lists unless explicitly requested
 - **Offer to commit logical units**: When completing a logical task or milestone, offer to update .ongoing files and create a git commit before proceeding
 
+## mdBook Authoring Guidelines
+
+When working on mdBook content:
+
+- **Consult notation conventions**: Always refer to the [Notation](./src/notation.md) chapter for mathematical and code formatting conventions
+- **Maintain factual tone**: Avoid unnecessary adjectives, opinions, or promotional language
+- **Add cross-references**: Link to related sections where concepts are defined or explained  
+- **Target audience**: Write for PL researchers familiar with type theory but not necessarily Rust
+
 **Example interaction pattern:**
 ```
 User: I want to work on X

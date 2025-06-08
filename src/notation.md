@@ -15,3 +15,12 @@ In the sections that follow we define the following non-terminals:
 - A type name $\tau$ (see [Types](./types.md))
 - A [trait definition and implementations](./traits-and-impls.md)
 - A [where clause](./where-clauses.md) $W$
+
+## Code Block Conventions
+
+In Rust code examples, mathematical overlines are represented using explicit enumeration:
+- $\overline{X}$ becomes `X_0, ..., X_n`
+- $\overline{W}$ becomes `W_0, ..., W_m`
+- $\overline{T_s}$ becomes `T_s_0, ..., T_s_n`
+
+Mathematical symbols are preserved as Unicode: $\tau$ → `τ`, $\tau_A$ → `τ_A`.
