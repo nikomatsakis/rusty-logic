@@ -1,0 +1,15 @@
+# Rust for Logicians
+
+- [Introduction](./introduction.md)
+- [Rusty, a featherweight Rust](./rusty-featherweight.md)
+  - [Notation](./notation.md)
+  - [Types](./types.md)
+  - [Trait definitions and impls in Rust](./traits-and-impls.md)
+  - [Where Clauses](./where-clauses.md)
+  - [Special traits](./special-traits.md)
+  - [Coinductive auto traits](./auto-traits.md)
+  - [Example programs](./examples.md)
+- [Judgments](./judgments.md)
+- [Basic axioms](./basic-axioms.md)
+- [Conclusion](./conclusion.md)
+- [Appendix](./appendix.md)

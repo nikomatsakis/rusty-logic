@@ -1,0 +1,1 @@
+# Coinductive auto traits

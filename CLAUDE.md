@@ -2,7 +2,24 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-**If you remember nothing else:** Before making edits to files or otherwise beginning execution, confirm the plan with the user.
+## Collaboration Style - MOST IMPORTANT
+
+**Always work collaboratively and check in with the user at each step.**
+
+- **Always confirm before taking action**: Before implementing code, creating files, or making substantial changes, describe your plan and ask for confirmation
+- **Break work into small steps**: Instead of planning large multi-step workflows, focus on the immediate next step and check in
+- **Ask, don't assume**: When unclear about direction or priorities, ask questions rather than making assumptions  
+- **Discuss before doing**: Favor discussion and exploration over immediate implementation
+- **One step at a time**: Complete one small task, show results, then ask what to do next
+- **No proactive todo lists**: Don't create comprehensive task lists unless explicitly requested
+
+**Example interaction pattern:**
+```
+User: I want to work on X
+Assistant: I see X involves A, B, and C. Should we start with A, or would you prefer to discuss the overall approach first?
+User: Let's start with A  
+Assistant: [does A] I've completed A. Here's what I found... Should we move to B next, or would you like to discuss something else?
+```
 
 ## Ongoing Work Tracking
 
