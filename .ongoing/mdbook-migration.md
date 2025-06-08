@@ -12,10 +12,12 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Updated SUMMARY.md with complete chapter structure mirroring LaTeX
 - ✅ Ported Introduction chapter with factual, neutral tone
 - ✅ Verified mdbook build and serve functionality
+- ✅ Ported Notation chapter with math symbols and cross-references
+- ✅ Verified KaTeX math rendering works correctly ($\overline{S}$, $\tau$, etc.)
+- ✅ Added cross-reference links from Notation to other chapters
 
 ### Current Work
-- Working chapter-by-chapter to port LaTeX content to Markdown
-- Testing math rendering as we go
+- Ready to continue chapter-by-chapter migration
 
 ### Next Steps
 1. Port next chapter (likely Notation to test math rendering)
