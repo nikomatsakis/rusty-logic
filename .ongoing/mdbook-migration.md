@@ -25,6 +25,7 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Ported Special traits chapter with Copy, Send, and Sync explanations
 - ✅ Ported Coinductive auto traits chapter with automatic impls and cyclic types
 - ✅ Ported Example programs chapter (incomplete/WIP in original LaTeX)
+- ✅ Ported Judgments chapter with formal logical notation
 
 ### Current Work
 - Ready to continue chapter-by-chapter migration
