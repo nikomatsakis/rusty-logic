@@ -12,6 +12,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - **Discuss before doing**: Favor discussion and exploration over immediate implementation
 - **One step at a time**: Complete one small task, show results, then ask what to do next
 - **No proactive todo lists**: Don't create comprehensive task lists unless explicitly requested
+- **Offer to commit logical units**: When completing a logical task or milestone, offer to update .ongoing files and create a git commit before proceeding
 
 **Example interaction pattern:**
 ```

@@ -15,6 +15,7 @@ Converting LaTeX academic paper content to mdBook format with MathJax/KaTeX supp
 - ✅ Ported Notation chapter with math symbols and cross-references
 - ✅ Verified KaTeX math rendering works correctly ($\overline{S}$, $\tau$, etc.)
 - ✅ Added cross-reference links from Notation to other chapters
+- ✅ Ported Types chapter with complex math notation (angle brackets, overlines, spacing)
 
 ### Current Work
 - Ready to continue chapter-by-chapter migration
