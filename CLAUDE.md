@@ -2,18 +2,6 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Collaboration Style - MOST IMPORTANT
-
-**Always work collaboratively and check in with the user at each step.**
-
-- **Always confirm before taking action**: Before implementing code, creating files, or making substantial changes, describe your plan and ask for confirmation
-- **Break work into small steps**: Instead of planning large multi-step workflows, focus on the immediate next step and check in
-- **Ask, don't assume**: When unclear about direction or priorities, ask questions rather than making assumptions  
-- **Discuss before doing**: Favor discussion and exploration over immediate implementation
-- **One step at a time**: Complete one small task, show results, then ask what to do next
-- **No proactive todo lists**: Don't create comprehensive task lists unless explicitly requested
-- **Offer to commit logical units**: When completing a logical task or milestone, offer to update .ongoing files and create a git commit before proceeding
-
 ## mdBook Authoring Guidelines
 
 When working on mdBook content:
