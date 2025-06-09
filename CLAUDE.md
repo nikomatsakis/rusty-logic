@@ -52,13 +52,19 @@ The project explores formal logic concepts, likely related to Rust programming l
 ## Common Commands
 
 ### Build System (using `just`)
-- `just build` - Compiles LaTeX to PDF and builds mdBook documentation
-- `just serve` - Serves the built documentation on local HTTP server
+- `just build` - Build Sphinx documentation 
+- `just serve` - Serve Sphinx documentation on local HTTP server
+- `just mdbook-build` - Build mdBook documentation
+- `just mdbook-serve` - Serve mdBook with live reload
+- `just build-all` - Build all documentation and Lean code
+- `just test-all` - Run all tests (currently just Lean)
+- `just check` - Check what tools are installed
 
-### Lean 4 Development
-- `cd rusty && lake build` - Build Lean 4 library and dependencies
-- `cd rusty && lake exe cache get` - Download mathlib4 cache for faster builds
-- `cd rusty && lake clean` - Clean build artifacts
+### Lean 4 Development  
+- `just lean-build` - Build Lean 4 library and dependencies
+- `just lean-test` - Build and test Lean 4 code
+- `just lean-clean` - Clean Lean build artifacts
+- `just lean-cache` - Download mathlib4 cache for faster builds
 
 ### Manual LaTeX Build
 - `pdflatex sn-article.tex` - Compile main academic paper
@@ -96,8 +102,8 @@ rusty-logic/
 
 ## Development Notes
 
-- The Lean 4 code is in early stages with basic propositional logic examples
+- The Lean 4 code includes AST definitions for the Rusty language subset with formal verification examples
 - LaTeX uses Springer Nature Mathematical Physics style (`sn-mathphys-num`)
 - Bibliography compilation is currently disabled in justfile
-- No automated testing or CI/CD configured
+- Automated CI/CD configured for mdBook deployment and Lean testing
 - Project uses git for version control

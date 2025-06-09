@@ -1,0 +1,51 @@
+name: Lean CI
+
+on:
+  push:
+    branches: [ main ]
+    paths: [ 'rusty/**', '.github/workflows/lean-ci.yml' ]
+  pull_request:
+    branches: [ main ]
+    paths: [ 'rusty/**', '.github/workflows/lean-ci.yml' ]
+  workflow_dispatch:
+
+env:
+  LEAN_VERSION: "leanprover/lean4:v4.9.0-rc1"
+
+jobs:
+  lean-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install elan
+        run: |
+          curl https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh -sSf | sh -s -- -y --default-toolchain none
+          echo "$HOME/.elan/bin" >> $GITHUB_PATH
+
+      - name: Cache Lean dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.elan
+            rusty/.lake
+          key: ${{ runner.os }}-lean-${{ hashFiles('rusty/lean-toolchain', 'rusty/lakefile.lean', 'rusty/lake-manifest.json') }}
+          restore-keys: |
+            ${{ runner.os }}-lean-
+
+      - name: Set up Lean toolchain
+        run: |
+          cd rusty
+          lake exe cache get || echo "No cache available"
+
+      - name: Build Lean project
+        run: |
+          cd rusty
+          lake build
+
+      - name: Check Lean examples
+        run: |
+          cd rusty
+          lake build Rusty.Examples
+          echo "✓ Lean project built and examples checked successfully"
