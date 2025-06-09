@@ -12,4 +12,4 @@
 - [Judgments](./judgments.md)
 - [Basic axioms](./basic-axioms.md)
 - [Conclusion](./conclusion.md)
-- [Appendix](./appendix.md)
+- [Appendices](./appendices.md)
