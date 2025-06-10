@@ -14,5 +14,6 @@
 - [Judgments](./judgments.md)
   - [Basic axioms](./basic-axioms.md)
   - [Trait implementation](./trait-impl-judgment.md)
+  - [Associated type normalization](./assoc-type-normalization.md)
 - [Conclusion](./conclusion.md)
 - [Appendices](./appendices.md)

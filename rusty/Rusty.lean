@@ -4,4 +4,5 @@ import «Rusty».Basic
 import «Rusty».AST
 import «Rusty».Substitution
 import «Rusty».TraitImpl
+import «Rusty».AssocTypeNorm
 import «Rusty».Examples
