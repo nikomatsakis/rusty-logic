@@ -11,6 +11,15 @@ When working on mdBook content:
 - **Add cross-references**: Link to related sections where concepts are defined or explained  
 - **Target audience**: Write for PL researchers familiar with type theory but not necessarily Rust
 
+### Literate Programming Style
+
+This project uses a "literate programming lite" approach:
+
+- **Include Lean code in mdBook**: Use mdBook's `{{#include}}` feature with anchors to include relevant Lean code sections
+- **Add anchors in Lean files**: Surround important definitions with `-- ANCHOR: name` and `-- ANCHOR_END: name` comments
+- **Create "Lean Implementation" sections**: Add these to mdBook chapters to show the formal definitions alongside mathematical notation
+- **Program parameter convention**: Lean judgments include an explicit `Program` parameter for implementation needs, but this is intentionally omitted from the mathematical notation in mdBook for clarity
+
 **Example interaction pattern:**
 ```
 User: I want to work on X

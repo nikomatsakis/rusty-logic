@@ -29,13 +29,6 @@ def vecIterImpl : TraitImpl := {
 def cloneWhereClause : WhereClause := 
   WhereClause.traitImpl (RustyType.param "T") "Clone"
 
--- Example: judgment Γ ⊢ Clone : Vec<T> (assuming T: Clone in context)
-def vecCloneJudgment : Judgment := 
-  Judgment.traitImpl 
-    [cloneWhereClause]  -- context: T: Clone
-    "Clone"             -- trait
-    (RustyType.struct "Vec" [RustyType.param "T"])  -- type
-
 -- Example program
 def exampleProgram : Program := {
   structs := [vecStruct],
@@ -43,9 +36,25 @@ def exampleProgram : Program := {
   impls := [vecIterImpl]
 }
 
+-- Example: judgment P; Γ ⊢ Clone : Vec<T> (proving where clause assuming T: Clone in context)
+def vecCloneJudgment : Judgment := 
+  Judgment.traitImpl 
+    exampleProgram      -- program
+    [cloneWhereClause]  -- context: T: Clone
+    "Clone"             -- trait
+    (RustyType.struct "Vec" [RustyType.param "T"])  -- type
+
+-- Example: more general where clause judgment P; Γ ⊢ W
+def generalWhereClauseJudgment : Judgment :=
+  Judgment.whereClause
+    exampleProgram      -- program
+    []                  -- empty context
+    cloneWhereClause    -- proving T: Clone directly
+
 #check vecStruct
 #check iteratorTrait  
 #check vecIterImpl
 #check cloneWhereClause
 #check vecCloneJudgment
+#check generalWhereClauseJudgment
 #check exampleProgram

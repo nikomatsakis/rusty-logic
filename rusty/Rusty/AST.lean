@@ -67,19 +67,25 @@ structure TraitImpl where
 -- Context for judgments (list of where clauses)
 abbrev Context := List WhereClause
 
--- Judgments from judgments.md
-inductive Judgment where
-  | traitImpl : Context → TraitName → RustyType → Judgment            -- Γ ⊢ T : τ
-  | assocNorm : Context → AssocTypeName → RustyType → RustyType → Judgment -- Γ ⊢ A : τ ↦ τ₁
-  | whereClause : Context → WhereClause → Judgment                    -- Γ ⊢ W
-  deriving Repr
-
+-- ANCHOR: program
 -- Program containing all definitions
 structure Program where
   structs : List StructDef
   traits : List TraitDef
   impls : List TraitImpl
   deriving Repr
+-- ANCHOR_END: program
+
+-- ANCHOR: judgment
+-- Judgments from judgments.md
+-- Note: In Lean, we explicitly thread the Program parameter through all judgments
+-- In the documentation, this is left implicit for cleaner mathematical notation
+inductive Judgment where
+  | traitImpl : Program → Context → TraitName → RustyType → Judgment            -- P; Γ ⊢ T : τ
+  | assocNorm : Program → Context → AssocTypeName → RustyType → RustyType → Judgment -- P; Γ ⊢ A : τ ↦ τ₁
+  | whereClause : Program → Context → WhereClause → Judgment                    -- P; Γ ⊢ W
+  deriving Repr
+-- ANCHOR_END: judgment
 
 -- Special traits (Copy, Send, Sync)
 inductive SpecialTrait where
