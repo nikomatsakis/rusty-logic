@@ -27,4 +27,26 @@ impl<X_0, ..., X_n> T for τ where W_0, ..., W_m {
 
 Implementations in Rust include:
 
-- A set of type parameters
+- A set of type parameters $\overline{X}$
+- The trait name $T$ being implemented
+- The implementing type $\tau$
+- Where clauses $\overline{W}$ that must be satisfied
+- The value $\tau_A$ for the associated type $A$
+
+## Lean Implementation
+
+Our formal definitions in Lean 4 directly capture these Rust constructs:
+
+### Trait Definition
+```lean
+{{#include ../rusty/Rusty/AST.lean:trait-def}}
+```
+
+### Trait Implementation
+```lean
+{{#include ../rusty/Rusty/AST.lean:trait-impl}}
+```
+
+Each Lean structure corresponds directly to the Rust syntax:
+- `TraitDef` captures trait name, supertraits, associated type, and its bounds
+- `TraitImpl` captures the complete impl syntax with type parameters, where clauses, and associated type values
