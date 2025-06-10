@@ -13,9 +13,8 @@ check:
     @command -v lean >/dev/null && echo "✓ lean" || echo "✗ lean (install via elan)"
     @command -v lake >/dev/null && echo "✓ lake" || echo "✗ lake (install via elan)"
 
-# Build documentation (Sphinx)
-build:
-    cd doc && make html
+# Build documentation
+build: mdbook-build
 
 # Build mdBook documentation
 mdbook-build:
@@ -23,7 +22,7 @@ mdbook-build:
 
 # Serve documentation
 serve: build
-    python3 -m http.server --directory doc/_build/html
+    mdbook serve
 
 # Serve mdBook documentation
 mdbook-serve:
