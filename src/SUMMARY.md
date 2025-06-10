@@ -5,6 +5,7 @@
   - [Notation](./notation.md)
   - [Program](./program.md)
   - [Types](./types.md)
+  - [Substitution](./substitution.md)
   - [Trait definitions and impls in Rust](./traits-and-impls.md)
   - [Where Clauses](./where-clauses.md)
   - [Special traits](./special-traits.md)
