@@ -6,15 +6,26 @@ This chapter addresses common questions about our approach through a socratic di
 
 **Student**: I'm confused about the soundness property you're establishing. When you say "soundness," what exactly are you trying to prove?
 
-**Author**: Great question! The property we want is actually about runtime safety. Our definition of "going wrong" is when Rust code executes and attempts to access a member of a trait that it believes to be implemented for a given type—like calling `<T as Trait>::method`—but there would in fact be no impl of `Trait` that applies to `T`.
+**Author**: Great question! The property we want is about runtime safety. Our definition of "going wrong" is when Rust code executes and attempts to access a member of a trait that it believes to be implemented for a given type—like calling `<T as Trait>::method`—but there would in fact be no impl of `Trait` that applies to `T`.
 
-**Student**: But wait, when does this trait member access actually happen at runtime? I thought type checking happened at compile time.
+**Student**: When does this trait member access actually happen? Can you make this concrete?
 
-**Author**: You're absolutely right to question this. Our model doesn't include functions at all—we're keeping things as simple as possible. The idea is that in Rust, a function body that believes `Trait` is implemented for `T` *could* call any of its methods. So what we really want to check is: when do functions believe traits are implemented?
+**Author**: Certainly! Our model includes functions that look like this:
+```
+fn foo<T₁, T₂, ...>() where W₁, W₂, ... {
+    // Function body contains:
+    // 1. Calls to other functions: bar::<String, i32>()
+    // 2. Assertions: assert_impl!(T₁: Display)
+}
+```
 
-**Student**: Ah, so you're abstracting away from actual function calls and focusing on the "belief system"—when does the type system convince a function that `T: Trait`?
+**Student**: What are these "assertions"?
 
-**Author**: Exactly! The property we want is: **"If the type system proves `T: Trait` (making it available as an assumption to function bodies), then there exists a concrete impl that witnesses this trait bound."**
+**Author**: Think of `assert_impl!(T: Trait)` as representing any point where the function body believes `Trait` is implemented for `T` and might call any of its methods. Rather than modeling every possible method call, we model the essential assertion that the trait is implemented.
+
+**Student**: So "going wrong" means executing an assertion that fails?
+
+**Author**: Exactly! **"Going wrong"** means executing `assert_impl!(T: Trait)` when no concrete impl exists to witness it. The soundness property becomes: **"If the type system accepts a program starting from `main`, then execution never reaches a failing assertion."**
 
 ## What does "impl existence" mean?
 
@@ -40,23 +51,59 @@ This chapter addresses common questions about our approach through a socratic di
 
 ## What about where-clause assumptions?
 
-**Student**: Here's something that puzzles me: in a function like `fn foo<T>() where T: Trait`, we assume `T: Trait` without any impl. How does this fit into the "impl existence" guarantee?
+**Student**: Here's something that puzzles me: in a function like `fn foo<T>() where T: Trait`, we can write `assert_impl!(T: Trait)` justified by the where-clause. But `T` is just a parameter - how does this fit into the "impl existence" guarantee?
 
-**Author**: That's a really important question. One way to think about it is that in Rust, all execution begins with `fn main` that has no where-clauses in scope. So we're concerned with whether it's possible to ultimately prove that a trait is implemented without any assumptions.
+**Author**: Excellent question! This is where the execution model becomes crucial. Consider this program:
+```
+fn foo<T>() where T: Display {
+    assert_impl!(T: Display);
+}
 
-**Student**: Are you sure that's sufficient? What if we can prove an implication that lets us make some assumption that causes a problem?
+fn main() {
+    foo::<String>();
+}
+```
 
-**Author**: You're right to be skeptical! I'm somewhat uncertain about this in the face of implications. If we set up our soundness proof properly, that should be okay, but it's definitely something we need to dig into further.
+**Student**: I see that `main` calls `foo` with a concrete type...
 
-## Associated types and projections
+**Author**: Exactly! When we execute `foo::<String>()`, we substitute `T = String` throughout `foo`'s body. So `assert_impl!(T: Display)` becomes `assert_impl!(String: Display)` - completely monomorphic.
 
-**Student**: What about associated type projections? If we prove `T: Iterator<Item = String>`, what impl are we claiming exists?
+**Student**: So we never actually execute assertions with type parameters?
 
-**Author**: We're claiming that there literally exists an impl with `type Item = String`.
+**Author**: Right! All execution begins with `main()`, which has no type parameters or where-clauses. Every function call from `main` provides concrete types, so every assertion that executes involves only monomorphic types.
 
-**Student**: And if we have `trait Iterator { type Item: Display; }` with `impl Iterator for Vec<String> { type Item = String; }`, then proving `Vec<String>: Iterator` requires also proving `String: Display`?
+**Student**: This eliminates the circularity about assumptions! We only need concrete witnesses.
 
-**Author**: Exactly! This is captured by our requirement that "all where-clauses of the impl are provable." The associated type constraints become part of what we need to verify.
+**Author**: Precisely. The soundness property becomes: "If `main` is well-typed, then every `assert_impl!(ConcreteType: Trait)` that could execute has a concrete impl witness." No reasoning about type parameters during execution - just concrete impl lookup.
+
+## Associated types and normalization
+
+**Student**: What about associated type projections? If I have a function that uses `<T as Iterator>::Item`, what happens during substitution?
+
+**Author**: Excellent question! Consider this example:
+```
+fn process_items<T>() where T: Iterator {
+    assert_impl!(<T as Iterator>::Item: Display);
+}
+
+fn main() {
+    process_items::<Vec<String>>();
+}
+```
+
+**Student**: When we substitute `T = Vec<String>`, don't we get `assert_impl!(<Vec<String> as Iterator>::Item: Display)`? That still has an associated type projection!
+
+**Author**: Precisely! Substitution involves **normalization** of associated type projections. We need to normalize `<Vec<String> as Iterator>::Item` to its concrete type (say, `String`), giving us `assert_impl!(String: Display)`.
+
+**Student**: So normalization must always be possible in well-typed programs?
+
+**Author**: That's a key property we want to establish! In a well-typed program, `<Vec<String> as Iterator>::Item` should normalize to exactly one type. This connects to **coherence** - the property that there's no ambiguity about which impl applies.
+
+**Student**: This seems like a separate concern from impl existence...
+
+**Author**: Indeed! For our soundness proof, we might separate these concerns. We could show the weaker property that there exists *some* normalized type for which impl witnesses exist, leaving the uniqueness (coherence) as a separate theorem.
+
+*[Note: The relationship between normalization, coherence, and soundness deserves deeper exploration in a dedicated section.]*
 
 ---
 
