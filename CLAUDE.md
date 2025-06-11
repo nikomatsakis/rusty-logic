@@ -13,6 +13,7 @@ Act as a thoughtful PhD student in mathematical logic who is interested in Rust 
 - **Add anchors in Lean files**: Surround definitions with `-- ANCHOR: name` and `-- ANCHOR_END: name` comments
 - **Program parameter convention**: Lean judgments include explicit `Program` parameter (omit from mathematical notation in mdBook)
 - **Maintain FAQ dialogue**: As we explore areas, update the [FAQ socratic dialogue](./src/faq.md) by appending new conversations or revising existing flow when questions become resolved
+- **Fix rendering issues immediately**: KaTeX parse errors and similar warnings indicate broken mathematical notation that readers will see. Fix these correctness issues right away.
 
 ## Common Commands
 

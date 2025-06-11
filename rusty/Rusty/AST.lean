@@ -7,6 +7,7 @@ abbrev TraitName := String
 abbrev AssocTypeName := String
 abbrev TypeParam := String
 abbrev FieldName := String
+abbrev FuncName := String
 
 -- ANCHOR: rusty-type
 -- Types in the Rusty subset
@@ -21,8 +22,8 @@ inductive RustyType where
 
 -- Free variables in types
 def RustyType.freeVars : RustyType → List TypeParam
-  | RustyType.struct _ args => args.bind RustyType.freeVars
-  | RustyType.tuple args => args.bind RustyType.freeVars  
+  | RustyType.struct _ args => (args.map RustyType.freeVars).join
+  | RustyType.tuple args => (args.map RustyType.freeVars).join
   | RustyType.assoc _ base => RustyType.freeVars base
   | RustyType.param x => [x]
 
@@ -74,12 +75,29 @@ structure TraitImpl where
 -- Context for judgments (list of where clauses)
 abbrev Context := List WhereClause
 
+-- ANCHOR: function
+-- Function statements in our simplified model
+inductive FuncStmt where
+  | call : FuncName → List RustyType → FuncStmt     -- Function call with explicit type args
+  | assert : RustyType → TraitName → FuncStmt       -- assert_impl!(τ: T)
+  deriving Repr
+
+-- Function definition  
+structure FuncDef where
+  name : FuncName
+  typeParams : List TypeParam
+  whereClauses : List WhereClause
+  body : List FuncStmt
+  deriving Repr
+-- ANCHOR_END: function
+
 -- ANCHOR: program
 -- Program containing all definitions
 structure Program where
   structs : List StructDef
   traits : List TraitDef
   impls : List TraitImpl
+  functions : List FuncDef
   deriving Repr
 -- ANCHOR_END: program
 

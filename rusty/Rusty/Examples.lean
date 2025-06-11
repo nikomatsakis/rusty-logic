@@ -33,7 +33,8 @@ def cloneWhereClause : WhereClause :=
 def exampleProgram : Program := {
   structs := [vecStruct],
   traits := [iteratorTrait],
-  impls := [vecIterImpl]
+  impls := [vecIterImpl],
+  functions := []
 }
 
 -- Example: judgment P; Γ ⊢ Clone : Vec<T> (proving where clause assuming T: Clone in context)
