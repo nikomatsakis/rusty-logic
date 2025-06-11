@@ -19,6 +19,13 @@ inductive RustyType where
   deriving Repr
 -- ANCHOR_END: rusty-type
 
+-- Free variables in types
+def RustyType.freeVars : RustyType → List TypeParam
+  | RustyType.struct _ args => args.bind RustyType.freeVars
+  | RustyType.tuple args => args.bind RustyType.freeVars  
+  | RustyType.assoc _ base => RustyType.freeVars base
+  | RustyType.param x => [x]
+
 -- ANCHOR: where-clause
 -- Where clauses
 -- From where-clauses.md: W ::= τ: T | τ: T<A = τ₁> | for<X...> W | W₀ => W₁ | W₀ ∧ W₁ | W₀ ∨ W₁ | ∃X. W

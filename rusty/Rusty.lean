@@ -5,4 +5,6 @@ import «Rusty».AST
 import «Rusty».Substitution
 import «Rusty».TraitImpl
 import «Rusty».AssocTypeNorm
+import «Rusty».Tests
+import «Rusty».Properties
 import «Rusty».Examples
