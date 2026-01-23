@@ -15,17 +15,26 @@ abbrev FuncName := String
 inductive RustyType where
   | struct : StructName → List RustyType → RustyType        -- S⟨τ₀,...,τₙ⟩
   | tuple : List RustyType → RustyType                      -- (τ₀,...,τₙ) where () is unit
-  | assoc : AssocTypeName → RustyType → RustyType          -- A:τ
-  | param : TypeParam → RustyType                          -- X
+  | assoc : AssocTypeName → RustyType → RustyType           -- A:τ
+  | param : TypeParam → RustyType                           -- X
   deriving Repr
 -- ANCHOR_END: rusty-type
 
+-- ANCHOR: free-variables
 -- Free variables in types
-def RustyType.freeVars : RustyType → List TypeParam
-  | RustyType.struct _ args => (args.map RustyType.freeVars).join
-  | RustyType.tuple args => (args.map RustyType.freeVars).join
-  | RustyType.assoc _ base => RustyType.freeVars base
-  | RustyType.param x => [x]
+mutual
+  def RustyType.freeVars : RustyType → List TypeParam
+    | .struct _ args => freeVarsList args
+    | .tuple args => freeVarsList args
+    | .assoc _ base => base.freeVars
+    | .param x => [x]
+
+  -- QUESTION for Lean people: is there a way to use `args.map` instead of open coding it?
+  def freeVarsList : List RustyType → List TypeParam
+    | [] => []
+    | t :: ts => t.freeVars ++ freeVarsList ts
+end
+-- ANCHOR_END: free-variables
 
 -- ANCHOR: where-clause
 -- Where clauses
@@ -82,7 +91,7 @@ inductive FuncStmt where
   | assert : RustyType → TraitName → FuncStmt       -- assert_impl!(τ: T)
   deriving Repr
 
--- Function definition  
+-- Function definition
 structure FuncDef where
   name : FuncName
   typeParams : List TypeParam
