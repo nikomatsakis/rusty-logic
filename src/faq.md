@@ -35,28 +35,18 @@ fn foo<T₁, T₂, ...>() where W₁, W₂, ... {
 1. The types are equal after instantiation
 2. All of the impl's where-clauses are provable
 
-**Student**: Can you give an example with blanket impls? If I have `impl<T: Display> ToString for T` and I want to prove `String: ToString`?
+**Student**: Can you give an example with blanket impls? If I have `impl<T: Debug> Display for T` and I want to prove `String: Display`?
 
-**Author**: Perfect example! The "existing impl" would be this blanket impl with `T = String`, and we'd need to prove `String: Display`. The impl "exists" if we can find this instantiation and prove all its requirements.
-
-## How do supertraits work?
-
-**Student**: What about supertraits? If I have `trait Sub: Super` and `impl Sub for String`, can I prove `String: Super` even though there's no explicit `impl Super for String`?
-
-**Author**: Exactly—this is a key case we need to examine. When you have `trait Sub: Super`, if a generic function knows that `T: Sub`, it can also *assume* that `T: Super`. We need to show that this assumption is well-founded, meaning there MUST exist an impl `Super for T`.
-
-**Student**: But how can there be an impl `Super for T` if I only wrote `impl Sub for T`?
-
-**Author**: This goes back to our definition of "impl existence." The same `impl Sub for String` declaration can witness both `String: Sub` and `String: Super`, because implementing `Sub` implies implementing `Super`.
+**Author**: Perfect example! The "existing impl" would be this blanket impl with `T = String`, and we'd need to prove `String: Debug`. The impl "exists" if we can find this instantiation and prove all its requirements.
 
 ## What about where-clause assumptions?
 
-**Student**: Here's something that puzzles me: in a function like `fn foo<T>() where T: Trait`, we can write `assert_impl!(T: Trait)` justified by the where-clause. But `T` is just a parameter - how does this fit into the "impl existence" guarantee?
+**Student**: Here's something that puzzles me: in a function like `fn foo<T>() where T: Trait`, we can write `assert_impl!(T: Trait)` justified by the where-clause. But `T` is just a parameter — how does this fit into the "impl existence" guarantee?
 
 **Author**: Excellent question! This is where the execution model becomes crucial. Consider this program:
 ```
-fn foo<T>() where T: Display {
-    assert_impl!(T: Display);
+fn foo<T>() where T: Debug {
+    assert_impl!(T: Debug);
 }
 
 fn main() {
@@ -66,7 +56,7 @@ fn main() {
 
 **Student**: I see that `main` calls `foo` with a concrete type...
 
-**Author**: Exactly! When we execute `foo::<String>()`, we substitute `T = String` throughout `foo`'s body. So `assert_impl!(T: Display)` becomes `assert_impl!(String: Display)` - completely monomorphic.
+**Author**: Exactly! When we execute `foo::<String>()`, we substitute `T = String` throughout `foo`'s body. So `assert_impl!(T: Debug)` becomes `assert_impl!(String: Debug)` — completely monomorphic.
 
 **Student**: So we never actually execute assertions with type parameters?
 
@@ -74,36 +64,7 @@ fn main() {
 
 **Student**: This eliminates the circularity about assumptions! We only need concrete witnesses.
 
-**Author**: Precisely. The soundness property becomes: "If `main` is well-typed, then every `assert_impl!(ConcreteType: Trait)` that could execute has a concrete impl witness." No reasoning about type parameters during execution - just concrete impl lookup.
-
-## Associated types and normalization
-
-**Student**: What about associated type projections? If I have a function that uses `<T as Iterator>::Item`, what happens during substitution?
-
-**Author**: Excellent question! Consider this example:
-```
-fn process_items<T>() where T: Iterator {
-    assert_impl!(<T as Iterator>::Item: Display);
-}
-
-fn main() {
-    process_items::<Vec<String>>();
-}
-```
-
-**Student**: When we substitute `T = Vec<String>`, don't we get `assert_impl!(<Vec<String> as Iterator>::Item: Display)`? That still has an associated type projection!
-
-**Author**: Precisely! Substitution involves **normalization** of associated type projections. We need to normalize `<Vec<String> as Iterator>::Item` to its concrete type (say, `String`), giving us `assert_impl!(String: Display)`.
-
-**Student**: So normalization must always be possible in well-typed programs?
-
-**Author**: That's a key property we want to establish! In a well-typed program, `<Vec<String> as Iterator>::Item` should normalize to exactly one type. This connects to **coherence** - the property that there's no ambiguity about which impl applies.
-
-**Student**: This seems like a separate concern from impl existence...
-
-**Author**: Indeed! For our soundness proof, we might separate these concerns. We could show the weaker property that there exists *some* normalized type for which impl witnesses exist, leaving the uniqueness (coherence) as a separate theorem.
-
-*[Note: The relationship between normalization, coherence, and soundness deserves deeper exploration in a dedicated section.]*
+**Author**: Precisely. The soundness property becomes: "If `main` is well-typed, then every `assert_impl!(ConcreteType: Trait)` that could execute has a concrete impl witness." No reasoning about type parameters during execution — just concrete impl lookup.
 
 ---
 

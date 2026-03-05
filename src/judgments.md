@@ -2,65 +2,44 @@
 
 ## Where clause provable
 
-The judgment 
-$$\Gamma \vdash W$$ indicates that the where clause $W$ is provable from the context $\Gamma$.
+The judgment
+$$\Gamma \vdash W$$
+indicates that the where clause $W$ is provable from the context $\Gamma$.
 
-For example, when $W$ is the where clause $T: \tau$, this judgment indicates that the trait $T$ is implemented for $\tau$.
+In our base system, the only form of where clause is $\tau: T$, so this judgment reduces to: can we prove that $\tau$ implements trait $T$?
 
-## Associated type normalization
+The context $\Gamma$ is a set of where clauses that are assumed to hold (e.g., from the where clauses on the enclosing function or impl).
 
-The judgment $$\Gamma \vdash A \: \tau \mapsto \tau_1$$ indicates that the associated type $A$, applied to the type $\tau$, reduces to $\tau_1$.
+## Inference rules
 
-## Program judgments
+There are two ways to prove $\Gamma \vdash \tau: T$:
 
-The judgments are used to reference user-provided program declarations:
+1. **Assumption**: The where clause $\tau: T$ is already in $\Gamma$.
+2. **Impl**: There exists an impl in the program that, after substitution, proves $\tau: T$. See [Trait implementation](./trait-impl-judgment.md).
 
-* $\text{impl}\langle\overline{X}\rangle\, T \text{ for } \tau \text{ where } \overline{W} \{ \text{type } A = \tau_A; \}$
-* $\text{struct } S\langle\overline{X}\rangle \{ \overline{f}: \overline{\tau} \}$
+### Assumption rule
 
-When we reference these judgments, we will sometimes use $\ldots$ to elide parts of the judgment that are not relevant. For example, the following inference rule references the fact that there is an impl of $T$ but it does not need to reference the associated type defined in the impl.
+$$\frac{(\tau: T) \in \Gamma}{\Gamma \vdash \tau: T} \text{[Assumption]}$$
 
-$$\frac{
-    \text{impl}\langle\overline{X}\rangle\, T \text{ for } \tau \text{ where } \overline{W} \in P \{ \ldots \} \quad
-    \Gamma \vdash \overline{W}
-}{
-    \Gamma \vdash T : \tau
-}$$
-
-This rule states that if the program $P$ contains an implementation of trait $T$ for type $\tau$ with where clauses $\overline{W}$, and the context $\Gamma$ proves all the where clauses $\overline{W}$, then we can conclude that the where clause $T : \tau$ is provable.
+If $\tau: T$ is already in our context, we can conclude it holds.
 
 ## Example
 
-Consider this simplified iterator trait and implementation:
+Consider this program:
 
 ```rust
-trait Iter {
-    type Item;
-}
+struct String {}
+struct Vec<T> {}
 
-impl<T> Iter for Vec<T> {
-    type Item = T;
-}
+trait Debug {}
+
+impl Debug for String {}
+impl<T> Debug for Vec<T> where T: Debug {}
 ```
 
-From this code, we can derive the following judgments:
+From this program, we can derive:
 
-1. **Trait implementation**: $\emptyset \vdash \text{Iter} : \text{Vec}\langle T \rangle$
-   
-   This states that `Vec<T>` implements the `Iter` trait (for any type `T`).
-
-2. **Associated type normalization**: $\emptyset \vdash \text{Item} : \text{Vec}\langle T \rangle \mapsto T$
-   
-   This states that when we ask "what is the `Item` type for `Vec<T>`?", the answer is `T`.
+1. $\emptyset \vdash \text{String}: \text{Debug}$ — via the concrete impl
+2. $\emptyset \vdash \text{Vec}\langle\text{String}\rangle: \text{Debug}$ — via the blanket impl with $T = \text{String}$, since the where clause $\text{String}: \text{Debug}$ is provable
 
 The empty context $\emptyset$ indicates these judgments hold without additional assumptions.
-
-## Lean Implementation
-
-The formal definition of judgments in our Lean 4 implementation:
-
-```lean
-{{#include ../rusty/Rusty/AST.lean:judgment}}
-```
-
-The Lean implementation includes an explicit `Program` parameter that contains all struct, trait, and impl definitions. This parameter is left implicit in the mathematical notation above for clarity, but is necessary in the implementation to access program declarations when evaluating judgments.

@@ -1,17 +1,49 @@
 # Example programs
 
-Here are some example programs we'll use later on.
+## Debug printing
 
-## Hello World
+A simple program with a trait, a concrete impl, and a blanket impl:
 
-## MagicCopy
+```rust
+struct String {}
+struct Vec<T> {}
 
-## MagicCopy
+trait Debug {}
 
-Rust where clauses correspond to logical
-Rust's syntax can be translated into our mathematical where-clauses as follows:
+impl Debug for String {}
+impl<T> Debug for Vec<T> where T: Debug {}
 
-- `t: T` becomes $T\:\tau$
-- `t: T<A = t1>` becomes $T\:\tau, A\:\tau \mapsto \tau_1$
-- `for<X..> W` becomes $\forall\overline{X}. [\![ W ]\!]$
-- `W0 => W1`, not available in Rust today, becomes $[\![ W_0 ]\!] \Rightarrow [\![ W_1 ]\!]$.
+fn print_vec<T>() where T: Debug {
+    assert_impl!(Vec<T>: Debug);
+}
+
+fn main() {
+    print_vec::<String>();
+}
+```
+
+Here `main` calls `print_vec::<String>()`. After substituting `T = String`, the assertion becomes `assert_impl!(Vec<String>: Debug)`, which holds because the blanket impl applies with `T = String`, and its where clause `String: Debug` is satisfied by the concrete impl.
+
+## Chained constraints
+
+A program where trait resolution requires multiple steps:
+
+```rust
+struct Foo {}
+
+trait A {}
+trait B {}
+
+impl A for Foo {}
+impl<T> B for T where T: A {}
+
+fn check<T>() where T: B {
+    assert_impl!(T: B);
+}
+
+fn main() {
+    check::<Foo>();
+}
+```
+
+After substitution, `assert_impl!(Foo: B)` holds because the blanket impl `impl<T> B for T where T: A` applies with `T = Foo`, and its where clause `Foo: A` is satisfied by the concrete impl.
