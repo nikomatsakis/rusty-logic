@@ -11,6 +11,10 @@ rusty/build/
 *.swo
 *~
 
+# Claude Code
+.claude/settings.local.json
+agent.log
+
 # OS
 .DS_Store
 Thumbs.db

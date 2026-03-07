@@ -29,7 +29,7 @@ where:
 
 Our simplified model includes two types of statements:
 
-1. **Function calls**: $f\langle\overline{\tau}\rangle()$ — calling function $f$ with explicit type arguments $\overline{\tau}$
+1. **Function calls**: $f\langle\overline{\tau}\rangle()$ — calling function $f$ with explicit type arguments $\overline{\tau}$ (written `f::<τ̄>()` in Rust surface syntax)
 2. **Trait assertions**: $\text{assert\_impl!}(\tau: T)$ — asserting that type $\tau$ implements trait $T$
 
 The assertion statements represent points where the function body relies on a trait being implemented. Rather than modeling individual method calls, we model the essential claim that the trait is implemented for the type.
