@@ -1,2 +1,7 @@
 -- This module serves as the root of the `Rusty` library.
--- Import modules here that should be built as part of the library.
+import Rusty.IR
+import Rusty.Judgment
+import Rusty.Surface
+import Rusty.Examples
+import Rusty.Execution
+import Rusty.Soundness
